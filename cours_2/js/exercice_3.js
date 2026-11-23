@@ -4,6 +4,8 @@
 // roule 1 fois au début du script     
 let ellipseposX = 0;
 let ellipseposY = 0; 
+let tailleEllipse = 200;
+
 
 let distanceMouseEllipse;
 let vitesse;
@@ -85,10 +87,13 @@ if (pince) {
 
 }    
 
+let tailleCible = pince ? 60 : 200;
+tailleEllipse = lerp(tailleEllipse, tailleCible, 0.1);
+
 push();
 noStroke();
 // ellipseposY =  ellipseposY + 1;
-ellipse(ellipseposX, ellipseposY, 200); 
+ellipse(ellipseposX, ellipseposY, tailleEllipse); 
 pop();
 
 dessinerMain();
