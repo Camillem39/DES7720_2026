@@ -8,6 +8,11 @@ let ellipseposY = 0;
 let distanceMouseEllipse;
 let vitesse;
 
+//SON!
+let osc;
+let enveloppe;
+let reverb;
+let frequency;
 
 function setup() {
 
@@ -16,14 +21,33 @@ createCanvas(640,640);
 ellipseposX = width/2;
 ellipseposY = height/2; 
 
+demarrerMain();
+
+
+// SETUP SYNTH 
+enveloppe = new p5.Envelope();
+reverb = new p5.Reverb(5);
+enveloppe.setADSR(0.05, 1.0, 1.0, 1.0);
+
+osc = new p5.Oscillator('sawtooth');
+osc.disconnect();        // Retirer la sortie directe
+osc.connect(enveloppe);  // Faire passer le son par l’enveloppe
+reverb.wet(0.5);          // Mélange : 50 % d’effet
+
+enveloppe.disconnect();
+enveloppe.connect(reverb);
+osc.amp(0.3);            // Volume du son
+osc.start();
+
 }
 
 // Dessiner en boucle.
 function draw() {
-background(255,64,19); 
+background(190,56, 243); 
 
 
-distanceMouseEllipse = dist(mouseX, mouseY, ellipseposX, ellipseposY);
+
+distanceMouseEllipse = dist(doigtX, doigtY, ellipseposX, ellipseposY);
 
 //console.log(distanceMouseEllipse); 
 
@@ -35,38 +59,60 @@ vitesse = map(distanceMouseEllipse, 0, width, 5, 0.001);
 //ellipseposY = constrain(ellipseposY, 100, height - 100);
 
 
-if (mouseX > ellipseposX) { 
+if (doigtX > ellipseposX) { 
 ellipseposX =  ellipseposX - vitesse;
 }
-else if (mouseX < ellipseposX) {
+else if (doigtX < ellipseposX) {
 ellipseposX =  ellipseposX + vitesse;
 }
 
-if (mouseY > ellipseposY) {
+if (doigtY > ellipseposY) {
 ellipseposY =  ellipseposY - vitesse;
 }
-else if (mouseY < ellipseposY) {
+else if (doigtY < ellipseposY) {
 ellipseposY =  ellipseposY + vitesse ;
 }
 
-if (mouseIsPressed) {
-    ellipseposX = lerp(ellipseposX, mouseX, 0.2);
-    ellipseposY = lerp(ellipseposY, mouseY, 0.2);
+if (pince) {
+    ellipseposX = lerp(ellipseposX, doigtX, 0.2);
+    ellipseposY = lerp(ellipseposY, doigtY, 0.2);
 
     push();
-    fill(255, 0, 0);
+    fill(0, 0, 255);
     rect(0, 0, width, height);
     pop();
+
+
 }    
 
+push();
 noStroke();
 // ellipseposY =  ellipseposY + 1;
 ellipse(ellipseposX, ellipseposY, 200); 
+pop();
+
+dessinerMain();
+
 }
+
 
 function mousePressed() {
- console.log("CLICK !"); 
 
 }
 
+function mouseReleased() {
 
+}
+
+function doigtPressed() {
+ //console.log("CLICK !"); 
+frequency = map(distanceMouseEllipse, 0, width, 820, 60); 
+osc.freq(frequency);
+enveloppe.play();
+ 
+}
+
+function doigtReleased() {
+    osc.freq(280);
+    enveloppe.play();
+}
