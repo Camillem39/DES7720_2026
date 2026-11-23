@@ -19,17 +19,17 @@ function draw() {
 background(255,64,19); 
 
 if (mouseX > ellipseposX) {
-ellipseposX =  ellipseposX + 1;
+ellipseposX =  ellipseposX - 1;
 }
 else if (mouseX < ellipseposX) {
 ellipseposX =  ellipseposX - 1;
 }
 
 if (mouseY > ellipseposY) {
-ellipseposY =  ellipseposY + 1;
+ellipseposY =  ellipseposY - 1;
 }
 else if (mouseY < ellipseposY) {
-ellipseposY =  ellipseposY - 1;
+ellipseposY =  ellipseposY + 1;
 }
 
 
