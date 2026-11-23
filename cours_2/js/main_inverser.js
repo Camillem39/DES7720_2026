@@ -11,10 +11,11 @@ const INVERSER_COTES = true;
 // etats[cote] = { doigtX, doigtY, pince, visible }
 let etats = {};
 
+// i
 function demarrerMain() {
   cameraMain = createCapture(VIDEO, function() {
     modeleMain = ml5.handPose({
-      maxHands: 2,
+      maxHands: 4,
       minDetectionConfidence: 0.8,
       minTrackingConfidence: 0.8
     }, function() {
